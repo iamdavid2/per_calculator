@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Calculadora de Concurrencia</title>
+  <style>
+    body { font-family: Arial; margin: 20px; }
+    input { margin: 5px; padding: 5px; }
+    .result { margin-top: 15px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<h2>Calculadora de Concurrencia</h2>
+
+<label>λ (requests/ms):</label>
+<input type="number" id="lambda" value="2"><br>
+
+<label>W (ms):</label>
+<input type="number" id="w" value="60"><br>
+
+<label>Número de servidores:</label>
+<input type="number" id="servers" value="10"><br>
+
+<label>Factor de velocidad (ej: 1 = normal, 1.5 = 50% más rápido):</label>
+<input type="number" id="speed" value="1"><br>
+
+<button onclick="calcular()">Calcular</button>
+
+<div class="result" id="output"></div>
+
+<script>
+function calcular() {
+  let lambda = parseFloat(document.getElementById("lambda").value);
+  let W = parseFloat(document.getElementById("w").value);
+  let servers = parseFloat(document.getElementById("servers").value);
+  let speed = parseFloat(document.getElementById("speed").value);
+
+  // Ajuste por velocidad (más rápido => menor W)
+  let adjustedW = W / speed;
+
+  // Concurrencia total
+  let L = lambda * adjustedW;
+
+  // Por servidor
+  let perServer = L / servers;
+
+  document.getElementById("output").innerHTML =
+    "Concurrencia total (L): " + L.toFixed(2) + "<br>" +
+    "Concurrencia por servidor: " + perServer.toFixed(2);
+}
+</script>
+
+</body>
+</html>
